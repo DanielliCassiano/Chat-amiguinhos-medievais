@@ -3,7 +3,18 @@
     height: 8px;
 }
 
+@media screen and (min-height: 900px) and (min-width: 1500px) {
+    #textFieldMessages {
+        width: 580px;
+        height: 8px;
+    }
+    #sendButton {
+        width: 130px;
+    }
+}
+
 #sendButton {
     background-color: #FF8243;
     height: 40px;
 }
+

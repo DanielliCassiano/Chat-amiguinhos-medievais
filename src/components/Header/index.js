@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import style from '../../styles/header.css';
 import dice from "../../assets/Header/rpg-dice.png";
 
-
 // Styled componets
 
 const HeaderDiv = styled.header`
@@ -21,15 +20,16 @@ const Menu = styled.nav`
 `
 
 const LogoDiv = styled.div`
-    width: 25%;
+    // width: 25%;
     height: 100%;
     // background-color: pink;
     display: flex;
+    justify-content: flex-start;
     flex-direction: row;
 `
 
 const DiceImgDiv = styled.div`
-    width: 40%;
+    // width: 40%;
     height: 100%;
     // background-color: grey;
 `
@@ -37,12 +37,15 @@ const DiceImgDiv = styled.div`
 const DiceImg = styled.img`
     max-width: 50px;
     margin-left: 50px;
+    margin-right: 50px;
 `
 
 const TitleDiv = styled.div`
-    width: 60%;
+    width: 100%;
     margin-top: 15px;
     height: 50%;
+    display: flex;
+    justify-content: space-between
     // background-color: red;
 `
 
@@ -57,6 +60,8 @@ const Line = styled.div`
 `
 
 function Header(props) {
+    let nick = localStorage.getItem('nickName')
+
     return (
         <HeaderDiv>
             <Menu>
@@ -65,9 +70,12 @@ function Header(props) {
                         <DiceImg src={dice} />
                     </DiceImgDiv>
                     <TitleDiv>
-                        <TitleSpan>
-                            Amiguinhos medievais
-                        </TitleSpan>
+                            <TitleSpan>
+                                Amiguinhos medievais
+                            </TitleSpan>
+                            <TitleSpan style={{marginRight: 50, color: "tomato"}}>
+                                NickName: {nick}
+                            </TitleSpan>
                     </TitleDiv>
                 </LogoDiv>
                 <div id="line"></div>

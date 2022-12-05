@@ -8,7 +8,10 @@ import styled from 'styled-components'
 import Button from '@mui/material/Button';
 
 import style from '../styles/home.css';
-
+import { Box } from "@mui/system";
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 const HeaderDiv = styled.div`
     width: 100%;
@@ -20,6 +23,24 @@ const BodyDiv = styled.div`
     height: 700px;
 `
 
+const boxStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'white',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+const TitleSpanBlack = styled.span`
+  font-family: 'Old London';
+  font-size: 19pt;
+  display: block;
+  margin-bottom: 16px
+`
 const Card = styled.div`
     margin-left: 20%;
     width: 60%;
@@ -62,6 +83,18 @@ const ButtonNew = styled.div`
 `
 
 function Home() {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [sala, setSala] = React.useState('');
+
+    const handleChange = (event) => {
+      setSala(event.target.value);
+    };
+
+    const createRoom = (event) => {
+        window.location.href = '/room'
+    }
 
     return (
         <div>
@@ -82,11 +115,42 @@ function Home() {
                             <Button component={Link} to="/Room" id="entryButton" variant="contained" >Mesa antiga</Button>
                         </ButtonOld>
                         <ButtonNew>
-                            <Button component={Link} to="/Room" id="entryButton" variant="contained" >Nova mesa</Button>
+                            <Button component={Link} onClick={handleOpen} id="entryButton" variant="contained" >Nova mesa</Button>
                         </ButtonNew>
                     </ButtonsDiv>
                 </Card>
             </BodyDiv>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={boxStyle}
+                      component="form"
+                      noValidate
+                      autoComplete="off">
+                    <TitleSpanBlack>
+                        Nova sala
+                    </TitleSpanBlack>
+                    <TextField id="outlined-basic" label="Nick name" variant="outlined" />
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Sala</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={sala}
+                            label="Sala"
+                            onChange={handleChange}
+                        >
+                        <MenuItem value={'clerigo'}>Clérigo</MenuItem>
+                        <MenuItem value={'druida'}>Druida</MenuItem>
+                        <MenuItem value={'paladino'}>Paladino</MenuItem>
+                        </Select>
+                        <Button variant="contained" onClick={createRoom}>Criar nova sala</Button>
+                    </FormControl>
+                </Box>
+            </Modal>
         </div>
     );
 }

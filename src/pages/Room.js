@@ -27,11 +27,16 @@ const Card = styled.div`
     margin-left: 30%;
     width: 40%;
     position: absolute;
-    height: 600px;
+    background-image: url(${rpgImage});
     margin-top: 40px;
     background-color: black;
-    background-image: url(${rpgImage});
+    @media (max-height: 600px) {
+        height: 600px;
+    }
     border-radius: 10px;
+    // @media (min-height: 800px) {
+    //     height: 500px;
+    // }
 `
 
 const TitleDiv = styled.div`

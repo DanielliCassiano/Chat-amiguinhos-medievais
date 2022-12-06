@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Button from '@mui/material/Button';
 
 import style from '../styles/home.css';
-import { Box } from "@mui/system";
+import { Box, width } from "@mui/system";
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
@@ -133,12 +133,11 @@ function Home() {
                     <TitleSpanBlack>
                         Nova sala
                     </TitleSpanBlack>
-                    <TextField id="outlined-basic" label="Nick name" variant="outlined" />
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Sala</InputLabel>
+                    <TextField fullWidth id="outlined-basic" label="Nick name" variant="outlined" />
+                    <FormControl fullWidth id="forms-select-control">
+                        <InputLabel>Sala</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
-                            id="demo-simple-select"
                             value={sala}
                             label="Sala"
                             onChange={handleChange}
@@ -147,7 +146,7 @@ function Home() {
                         <MenuItem value={'druida'}>Druida</MenuItem>
                         <MenuItem value={'paladino'}>Paladino</MenuItem>
                         </Select>
-                        <Button variant="contained" onClick={createRoom}>Criar nova sala</Button>
+                        <Button onClick={createRoom} id="buttonPrincipal">Criar nova sala</Button>
                     </FormControl>
                 </Box>
             </Modal>

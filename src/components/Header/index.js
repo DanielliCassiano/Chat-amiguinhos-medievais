@@ -61,7 +61,7 @@ const Line = styled.div`
 
 function Header(props) {
     let nick = localStorage.getItem('nickName')
-
+    let nickName;
     return (
         <HeaderDiv>
             <Menu>
@@ -74,7 +74,7 @@ function Header(props) {
                                 Amiguinhos medievais
                             </TitleSpan>
                             <TitleSpan style={{marginRight: 50, color: "tomato"}}>
-                                NickName: {nick}
+                                nickName: {nickName}
                             </TitleSpan>
                     </TitleDiv>
                 </LogoDiv>

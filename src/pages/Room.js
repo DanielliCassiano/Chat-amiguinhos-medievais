@@ -120,11 +120,19 @@ function Room() {
             messageForm.addEventListener('submit', e => {
               e.preventDefault()
               const message = messageForm
-              Socket.emit('send-chat-message', roomName, message)
+              Socket.emit('send-new-message', roomName, message)
               setMessageForm('')
             })
         }
     }
+
+    socket.on('send-chat-message', function(user, msg) {
+        setChat((prevState) => {
+            const obj = { ...prevState };
+            obj.push({"user": user,  "message": msg});
+            return obj;
+        });
+    });
 
     const handleText = (e) => {
         let { value } = e.target || { value: null};
@@ -142,7 +150,7 @@ function Room() {
                     <TitleDiv>
                         <TextDiv>
                             <TitleSpan>
-                            Bem-vindo(a) à mesa tralala
+                            Bem-vindo(a) à mesa {roomName};
                             </TitleSpan>
                         </TextDiv>
                     </TitleDiv>
@@ -153,16 +161,16 @@ function Room() {
                                 <TextChatUser>
                                     {value.user} -
                                 </TextChatUser>
-                                <TextChatMsg>
+                                <TextChatMsg id="chat-area">
                                     {value.message}
                                 </TextChatMsg>
                             </TextDivChat>
                             </>
                         ))}
                         </TextChat>
-                    <ButtonsDiv>
+                    <ButtonsDiv id="submit-area">
                         <TextFieldDiv>
-                            <TextField onChange={handleText} id="textFieldMessages"/>
+                            <TextField onChange={handleText} id="message-input"/>
                         </TextFieldDiv>
                         <ButtonDiv>
                             <Button  id="sendButton" variant="contained" >Enviar</Button>

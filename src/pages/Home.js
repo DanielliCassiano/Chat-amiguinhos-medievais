@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 
 import Header from "../components/Header/";
 
@@ -12,6 +14,7 @@ import { Box, width } from "@mui/system";
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { SimCard } from "@mui/icons-material";
 
 const HeaderDiv = styled.div`
     width: 100%;
@@ -83,14 +86,45 @@ const ButtonNew = styled.div`
 `
 
 function Home() {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [sala, setSala] = React.useState('');
+    
+    const socket = io();
+    const navigate = useNavigate();
 
-    const handleChange = (event) => {
+    const [openNew, setOpenNew] = React.useState(false);
+    const handleOpenNew = () => setOpenNew(true);
+    const handleCloseNew = () => setOpenNew(false);
+    const [sala, setSala] = React.useState('');
+    const [nickName, setnickName] = React.useState('');
+
+    const [openOld, setOpenOld] = React.useState(false);
+    const handleOpenOld = () => setOpenOld(true);
+    const handleCloseOld = () => setOpenOld(false);
+
+    const handleChangeSala = (event) => {
       setSala(event.target.value);
+      console.log('Alterando a sala:', sala);
+
     };
+
+    const handleChangeUser = event => {
+        setnickName(event.target.value);
+        console.log('Alterando o usuário:', sala);
+    }
+
+    const getInSession = () => {
+        const user = nickName
+        const roomName = sala
+        if (user !== '' || undefined) { 
+            if (roomName !== '' || undefined) {
+                console.log('Deu certo, nome da sala:', roomName)
+                console.log('Deu certo, nome da sala:', nickName)
+                socket.emit('new-user', roomName, nickName)
+                navigate('/Room')
+            }
+        } else {
+            alert('Selecione uma sala e preencha o nickName.')
+        }
+    }
 
     const createRoom = (event) => {
         window.location.href = '/room'
@@ -112,17 +146,46 @@ function Home() {
                     <ButtonsDiv>
                         {/* Controlar as mesas antigas através de uma modal, nela irá listar todas as salas já criadas, ao clicar em uma, entrará em uma sala já existente */}
                         <ButtonOld>
-                            <Button component={Link} to="/Room" id="entryButton" variant="contained" >Mesa antiga</Button>
+                            <Button component={Link} onClick={handleOpenOld} id="entryButton" variant="contained" >Mesa antiga</Button>
                         </ButtonOld>
                         <ButtonNew>
-                            <Button component={Link} onClick={handleOpen} id="entryButton" variant="contained" >Nova mesa</Button>
+                            <Button component={Link} onClick={handleOpenNew} id="entryButton" variant="contained" >Nova mesa</Button>
                         </ButtonNew>
                     </ButtonsDiv>
                 </Card>
             </BodyDiv>
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={openOld}
+                onClose={handleCloseOld}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={boxStyle}
+                      component="form"
+                      noValidate
+                      autoComplete="off">
+                    <TitleSpanBlack>
+                        Mesas existentes
+                    </TitleSpanBlack>
+                    <TextField onChange={handleChangeUser} fullWidth id="outlined-basic" label="Nick name" variant="outlined" />
+                    <FormControl fullWidth id="forms-select-control">
+                        <InputLabel>Mesas</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            value={sala}
+                            label="Sala"
+                            onChange={handleChangeSala}
+                        >
+                        <MenuItem id="itemSelect" value={'clerigo'}>Clérigo</MenuItem>
+                        <MenuItem value={'teste'}>Teste</MenuItem>
+                    </Select>
+                    <Button onClick={getInSession} id="buttonPrincipal">Entrar na sessão</Button>
+                    </FormControl>
+                </Box>
+            </Modal>
+            <Modal
+                open={openNew}
+                onClose={handleCloseNew}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 >
@@ -140,7 +203,8 @@ function Home() {
                             labelId="demo-simple-select-label"
                             value={sala}
                             label="Sala"
-                            onChange={handleChange}
+                            onChange={handleChangeSala}
+                            id="room-list"
                         >
                         <MenuItem value={'clerigo'}>Clérigo</MenuItem>
                         <MenuItem value={'druida'}>Druida</MenuItem>

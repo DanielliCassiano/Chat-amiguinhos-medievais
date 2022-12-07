@@ -1,10 +1,10 @@
-#textFieldMessages {
+#message-input {
     width: 460px;
     height: 8px;
 }
 
 @media screen and (min-height: 900px) and (min-width: 1500px) {
-    #textFieldMessages {
+    #message-input {
         width: 580px;
         height: 8px;
     }
